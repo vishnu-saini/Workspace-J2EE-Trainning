@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+
+	<import resource="application-context.xml" />
+	<security:global-method-security
+		secured-annotations="enabled" />
+	<security:http use-expressions="true">
+		<security:intercept-url pattern="/*"
+			access="hasRole('Customer') or hasRole('Banker')" />
+		<security:intercept-url pattern="/transaction/*"
+			access="hasRole('Banker')" />
+
+		<security:form-login />
+		<security:logout logout-url="/logout"
+			logout-success-url="/" />
+		<security:csrf />
+	</security:http>
+
+
+
+	<security:authentication-manager>
+		<security:authentication-provider
+			user-service-ref="userDetailsService" />
+		<!-- <security:authentication-provider> <security:password-encoder ref="encoder" 
+			/> <security:user-service> <security:user name="banker" password="$2a$12$z6WVWHVnYHjYVNjpwrkg8udln.lk5RHDhaeQoYTxKwre5u/4lxEsG" 
+			authorities="Banker, Customer" /> <security:user name="customer" password="$2a$12$UansX2lQnIbJ4jp.swDoZuNY653Yd/C/V2GqgEV7kzBfNbgrRSdLK" 
+			authorities="Customer" /> </security:user-service> </security:authentication-provider> -->
+	</security:authentication-manager>
+</beans>

@@ -1,0 +1,22 @@
+.metadata/
+Servers/
+RemoteSystemsTempFiles/
+.recommenders/
+
+
+
+#eclipse project specific
+*/.classpath
+*/.project
+*/.settings/
+*/build/
+*/bin/
+*/target/
+
+#eclipse project specific
+.classpath
+.project
+.settings/
+build/
+bin/
+target/

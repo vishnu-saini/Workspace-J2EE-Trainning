@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+
+	<import resource="application-context.xml" />
+	<security:http use-expressions="true">
+
+
+		<security:intercept-url pattern="/admin/**"
+			access="hasRole('Admin')" />
+		<security:intercept-url pattern="/user/**"
+			access="hasRole('User')" />
+		<security:intercept-url pattern="/**"
+			access="isAnonymous()" />
+		<!-- this means all URL in this app will be checked if user is authenticated -->
+
+		<security:form-login />
+		<!-- We will just use the built-in form login page in Spring -->
+
+		<security:logout logout-url="/logout"
+			logout-success-url="/" />
+		<!-- the logout url we will use in JSP -->
+	</security:http>
+
+	<security:authentication-manager>
+		<security:authentication-provider>
+			<!-- Normally, in this part, you will declare the source of your users 
+				But for simplicity, we will hard-code the users. This is very useful while 
+				testing setup -->
+			<security:password-encoder ref="encoder" />
+			<security:user-service>
+				<security:user name="admin"
+					password="$2a$12$Z2Oizg0oZiguhXCTH51a2OB5ivwlV0yOF3Bj4WY.t6yDdVJc8hr4m"
+					authorities="Admin, User" />
+				<security:user name="user"
+					password="$2a$12$UansX2lQnIbJ4jp.swDoZuNY653Yd/C/V2GqgEV7kzBfNbgrRSdLK"
+					authorities="User" />
+			</security:user-service>
+		</security:authentication-provider>
+	</security:authentication-manager>
+</beans>
